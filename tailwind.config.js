@@ -25,7 +25,7 @@ export default {
     				surface: '#14213D',
     				accent: {
                         primary: '#FCA311',
-                        secondary: 'rgba(252,163,17,0.18)'
+                        secondary: 'rgb(74,58,26)'
                     },
     				text: '#FFFFFF',
     				muted: '#E5E5E5'
