@@ -15,7 +15,7 @@ const tracks = [
   {
     id: 1,
     name: "Forest lullaby",
-    coverPath: "https://picsum.photos/306/288",
+    coverPath: "https://picsum.photos/307/288",
     trackPath: forestLullaby,
   },
 ];

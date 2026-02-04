@@ -15,6 +15,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                ui: {
+                    bg: '#000000', // app háttér
+                    surface: '#14213D', // card / panel / sidebar
+                    accent: '#FCA311', // CTA / play / active
+                    text: '#FFFFFF', // elsődleges szöveg
+                    muted: '#E5E5E5', // másodlagos szöveg
+                },
+            },
         },
     },
 
