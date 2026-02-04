@@ -1,5 +1,6 @@
 <script setup>
 import NavbarComponent from '@/Components/NavbarComponent.vue';
+import BottomPlayerComponent from '@/Components/BottomPlayerComponent.vue';
 </script>
 
 <template>
@@ -7,16 +8,16 @@ import NavbarComponent from '@/Components/NavbarComponent.vue';
         <div class="flex h-full flex-col">
             <nav>
                 <!-- Primary Navigation Menu -->
-                <NavbarComponent/>
+                <NavbarComponent />
             </nav>
 
             <!--            Sidebar-->
             <div class="flex min-h-0 flex-1 overflow-hidden">
                 <!-- SIDEBAR (mindig látszik, saját scroll ha kell) -->
                 <aside
-                    class="m-1 hidden w-16 shrink-0 overflow-y-auto rounded bg-ui-surface text-ui-text lg:flex"
+                    class="m-1 hidden  shrink-0 overflow-y-auto rounded bg-ui-surface text-ui-text lg:flex"
                 >
-                    <div class="flex flex-col space-y-6 p-3 pt-5">
+                    <div class="flex flex-col space-y-6 p-4 pt-5">
                         <div>Ikon 1</div>
                         <div>Ikon 2</div>
                         <div>Ikon 3</div>
@@ -29,12 +30,9 @@ import NavbarComponent from '@/Components/NavbarComponent.vue';
                 </main>
             </div>
 
-            <div
-                class="mx-1 flex h-20 w-full flex-row items-center justify-between rounded bg-ui-surface px-4 text-ui-text"
-            >
-                <div>bal</div>
-                <div>Közép</div>
-                <div>jobb</div>
+            <div>
+                <!--  Player Component-->
+                <BottomPlayerComponent/>
             </div>
         </div>
     </div>

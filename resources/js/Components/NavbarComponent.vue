@@ -46,7 +46,7 @@ watch(searchInputFocused, (focused) => {
 </script>
 
 <template>
-    <div class="m-1 rounded bg-ui-surface px-4 text-ui-text sm:px-6 lg:px-4">
+    <div class="mt-1 mx-1 rounded bg-ui-surface px-4 text-ui-text sm:px-6 lg:px-4">
         <div class="flex h-16 flex-row items-center justify-between">
             <div>
                 <Link :href="route('dashboard')">
@@ -105,7 +105,7 @@ watch(searchInputFocused, (focused) => {
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        class="cu border-black bg-ui-surface p-3 text-ui-text"
+                        class="border-black bg-ui-surface p-3 text-ui-text"
                     >
                         <DropdownMenuItem @click="redirect('profile')">
                             Profile</DropdownMenuItem
