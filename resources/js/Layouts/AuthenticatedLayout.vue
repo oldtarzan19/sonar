@@ -1,6 +1,5 @@
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import NavbarComponent from '@/Components/NavbarComponent.vue';
 </script>
 
 <template>
@@ -8,22 +7,7 @@ import { Link } from '@inertiajs/vue3';
         <div class="flex h-full flex-col">
             <nav>
                 <!-- Primary Navigation Menu -->
-                <div class="bg-ui-surface px-4 sm:px-6 lg:px-4 m-1 text-ui-text rounded">
-                    <div
-                        class="flex h-16 flex-row items-center justify-between"
-                    >
-                        <div>
-                            <Link :href="route('dashboard')">
-                                <ApplicationLogo
-                                    class="h-9 fill-current text-ui-text"
-                                />
-                            </Link>
-                        </div>
-
-                        <div>Közép</div>
-                        <div>jobb</div>
-                    </div>
-                </div>
+                <NavbarComponent/>
             </nav>
 
             <!--            Sidebar-->
@@ -46,7 +30,7 @@ import { Link } from '@inertiajs/vue3';
             </div>
 
             <div
-                class="flex h-20 w-full flex-row items-center justify-between px-4 bg-ui-surface text-ui-text mx-1 rounded"
+                class="mx-1 flex h-20 w-full flex-row items-center justify-between rounded bg-ui-surface px-4 text-ui-text"
             >
                 <div>bal</div>
                 <div>Közép</div>
