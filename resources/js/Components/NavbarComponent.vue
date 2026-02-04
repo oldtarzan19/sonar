@@ -1,9 +1,9 @@
 <script setup>
-import { House, Search } from 'lucide-vue-next';
+import { House, Search, ArrowDown } from 'lucide-vue-next';
 import { ref, useTemplateRef, watch } from 'vue';
 import { useFocus } from '@vueuse/core';
 import { Input } from '@/Components/ui/input/index.js';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import {
     Popover,
@@ -11,12 +11,30 @@ import {
     PopoverAnchor,
 } from '@/Components/ui/popover/index.js';
 import { usePage } from '@inertiajs/vue3';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+    DropdownMenuItem,
+} from '@/Components/ui/dropdown-menu/index.js';
 
 const page = usePage();
 
 const searchInput = useTemplateRef('searchInput');
 const { focused: searchInputFocused } = useFocus(searchInput);
 const popoverOpen = ref(false);
+
+const redirect = (direction) => {
+    if (direction === 'dashboard') {
+        router.visit(route('dashboard'));
+    }
+    if (direction === 'profile') {
+        router.visit(route('profile.edit'));
+    }
+    if (direction === 'logout') {
+        router.post(route('logout'));
+    }
+};
 
 const focusOnSearch = () => {
     searchInputFocused.value = true;
@@ -25,7 +43,6 @@ const focusOnSearch = () => {
 watch(searchInputFocused, (focused) => {
     popoverOpen.value = focused;
 });
-
 </script>
 
 <template>
@@ -41,7 +58,7 @@ watch(searchInputFocused, (focused) => {
                 <div
                     class="cursor-pointer rounded-full bg-ui-accent-secondary p-2 duration-300 hover:bg-ui-accent-secondary/40"
                 >
-                    <House />
+                    <House @click="redirect('dashboard')" />
                 </div>
 
                 <Popover :open="popoverOpen">
@@ -77,7 +94,27 @@ watch(searchInputFocused, (focused) => {
                 </Popover>
             </div>
             <div>
-                {{ page.props.auth.user.name }}
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <div
+                            class="flex flex-row items-center gap-1 hover:text-ui-muted"
+                        >
+                            {{ page.props.auth.user.name }}
+
+                            <ArrowDown class="size-4" />
+                        </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        class="cu border-black bg-ui-surface p-3 text-ui-text"
+                    >
+                        <DropdownMenuItem @click="redirect('profile')">
+                            Profile</DropdownMenuItem
+                        >
+                        <DropdownMenuItem @click="redirect('logout')"
+                            >Logout</DropdownMenuItem
+                        >
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </div>
     </div>
