@@ -27,7 +27,7 @@ const changeRepeatedStatus = () => {
     isRepeated.value = !isRepeated.value;
 };
 
-const changeRepeatedShuffled = () => {
+const changeShuffledStatus = () => {
     isShuffled.value = !isShuffled.value;
 };
 
@@ -72,6 +72,7 @@ watch(isMuted, () => {
     >
         <div class="flex flex-row items-center justify-start gap-2">
             <img
+                alt=""
                 src="https://picsum.photos/56/56"
                 class="h-auto w-[56px] rounded"
             />
@@ -87,11 +88,11 @@ watch(isMuted, () => {
             <div class="flex h-full flex-col items-center space-y-3">
                 <div class="flex flex-row items-center gap-6">
                     <div
-                        class="relative cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-ui-muted"
+                        class="relative cursor-pointer transition-transform duration-300 hover:scale-110 "
                         :class="{
                             'text-ui-accent-primary': isShuffled,
                         }"
-                        @click="changeRepeatedShuffled"
+                        @click="changeShuffledStatus"
                     >
                         <Shuffle />
                         <span
@@ -100,7 +101,7 @@ watch(isMuted, () => {
                         ></span>
                     </div>
                     <div
-                        class="cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-ui-muted"
+                        class="cursor-pointer transition-transform duration-300 hover:scale-110"
                         @click="prevSong"
                     >
                         <SkipBack />

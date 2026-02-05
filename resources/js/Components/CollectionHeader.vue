@@ -27,10 +27,10 @@ const isDefaultCover = computed(() => !props.coverImageSrc);
 
 <template>
     <div
-        class="flex h-full w-full flex-row gap-7 rounded-t bg-gradient-to-b from-ui-accent-primary/50 to-ui-text/50 p-5"
+        class="flex h-full w-full flex-row gap-7 rounded-t bg-gradient-to-b from-ui-accent-primary/50 to-ui-text/30 p-5"
     >
         <div
-            class="flex h-52 w-52 items-center justify-center  bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1"
+            class="flex h-52 w-52 items-center justify-center rounded bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1"
             v-show="isDefaultCover"
         >
             <Heart class="h-[40%] w-[40%] fill-white text-white" />
