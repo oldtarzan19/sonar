@@ -12,6 +12,7 @@ import { Separator } from '@/Components/ui/separator/index.js';
             />
         </Link>
         <Link
+            :href="route('collection.index')"
             class="flex h-[44px] w-[44px] items-center justify-center rounded bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1 shadow-lg transition-transform hover:scale-105 hover:shadow-black duration-200"
         >
             <Heart class="fill-white" />
@@ -21,14 +22,17 @@ import { Separator } from '@/Components/ui/separator/index.js';
         <!-- This will be a link the the playlists -->
         <div class="flex flex-col items-center space-y-4">
             <img
+                alt=""
                 src="https://picsum.photos/303/288"
                 class="w-[44px], h-[44px] rounded transition-transform hover:scale-105"
             />
             <img
+                alt=""
                 src="https://picsum.photos/301/288"
                 class="w-[44px], h-[44px] rounded transition-transform hover:scale-105"
             />
             <img
+                alt=""
                 src="https://picsum.photos/302/288"
                 class="w-[44px], h-[44px] rounded transition-transform hover:scale-105"
             />

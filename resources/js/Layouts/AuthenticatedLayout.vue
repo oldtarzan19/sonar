@@ -12,13 +12,13 @@ import SideBarComponent from '@/Components/SideBarComponent.vue';
                 <NavbarComponent />
             </nav>
 
-            <!--            Sidebar-->
+            <!-- Sidebar-->
             <div class="flex min-h-0 flex-1 overflow-hidden">
                 <!-- SIDEBAR -->
                 <aside
                     class="m-1 hidden shrink-0 overflow-y-auto rounded bg-ui-surface text-ui-text lg:flex"
                 >
-                    <SideBarComponent/>
+                    <SideBarComponent />
                 </aside>
 
                 <!-- MAIN: csak ez görgethető -->
@@ -29,7 +29,7 @@ import SideBarComponent from '@/Components/SideBarComponent.vue';
 
             <div>
                 <!--  Player Component-->
-                <BottomPlayerComponent/>
+                <BottomPlayerComponent />
             </div>
         </div>
     </div>
