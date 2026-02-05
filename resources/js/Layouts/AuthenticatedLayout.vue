@@ -22,7 +22,7 @@ import SideBarComponent from '@/Components/SideBarComponent.vue';
                 </aside>
 
                 <!-- MAIN: csak ez görgethető -->
-                <main class="m-1 min-h-0 flex-1 overflow-y-auto">
+                <main class="mt-1 min-h-0 flex-1 overflow-y-auto">
                     <slot />
                 </main>
             </div>
