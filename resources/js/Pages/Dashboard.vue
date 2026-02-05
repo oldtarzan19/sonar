@@ -9,7 +9,7 @@ import PlayerComponent from '@/Components/PlayerComponent.vue';
 
     <AuthenticatedLayout>
         <div
-            class="bg-gradient-to-b from-ui-accent/60  to-ui-bg to-35% flex min-h-full items-center justify-center rounded"
+            class="bg-gradient-to-b from-ui-accent-primary/60 to-ui-bg to-35% flex min-h-full items-center justify-center rounded"
         >
             <PlayerComponent />
         </div>

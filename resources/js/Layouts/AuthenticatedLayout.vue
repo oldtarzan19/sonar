@@ -1,6 +1,7 @@
 <script setup>
 import NavbarComponent from '@/Components/NavbarComponent.vue';
 import BottomPlayerComponent from '@/Components/BottomPlayerComponent.vue';
+import SideBarComponent from '@/Components/SideBarComponent.vue';
 </script>
 
 <template>
@@ -13,15 +14,11 @@ import BottomPlayerComponent from '@/Components/BottomPlayerComponent.vue';
 
             <!--            Sidebar-->
             <div class="flex min-h-0 flex-1 overflow-hidden">
-                <!-- SIDEBAR (mindig látszik, saját scroll ha kell) -->
+                <!-- SIDEBAR -->
                 <aside
-                    class="m-1 hidden  shrink-0 overflow-y-auto rounded bg-ui-surface text-ui-text lg:flex"
+                    class="m-1 hidden shrink-0 overflow-y-auto rounded bg-ui-surface text-ui-text lg:flex"
                 >
-                    <div class="flex flex-col space-y-6 p-4 pt-5">
-                        <div>Ikon 1</div>
-                        <div>Ikon 2</div>
-                        <div>Ikon 3</div>
-                    </div>
+                    <SideBarComponent/>
                 </aside>
 
                 <!-- MAIN: csak ez görgethető -->
