@@ -31,7 +31,7 @@ const scrollContainer = ref(null);
 onMounted(() => {
     scrollContainer.value = document.querySelector('main');
 });
-const { y } = useScroll(scrollContainer);
+const { y } = useScroll(scrollContainer, { behavior: 'smooth' });
 const stickyHeaderOpacity = computed(() => {
     return Math.min(y.value / 200, 1);
 });
@@ -190,7 +190,9 @@ const collection = [
                                 class="fill-white text-white"
                             />
                         </div>
-                        <span class="text-white text-xl font-bold">Kedvelt dalok</span>
+                        <span class="text-xl font-bold text-white"
+                            >Kedvelt dalok</span
+                        >
                     </div>
                 </Transition>
             </div>
