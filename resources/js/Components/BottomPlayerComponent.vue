@@ -120,7 +120,7 @@ watch(isMuted, () => {
                         <SkipForward />
                     </div>
                     <div
-                        class="relative cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-ui-muted"
+                        class="relative cursor-pointer transition-transform duration-300 hover:scale-110"
                         :class="{
                             'text-ui-accent-primary': isRepeated,
                         }"

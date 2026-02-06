@@ -13,7 +13,7 @@ const props = defineProps({
     },
     numberOfSongs: {
         required: true,
-        type: Number,
+        type: String,
     },
     coverImageSrc: {
         required: false,
@@ -30,7 +30,7 @@ const isDefaultCover = computed(() => !props.coverImageSrc);
         class="flex h-full w-full flex-row gap-7 rounded-t bg-gradient-to-b from-ui-accent-primary/50 to-ui-text/30 p-5"
     >
         <div
-            class="flex h-52 w-52 items-center justify-center rounded bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1"
+            class="flex h-52 w-52 items-center justify-center rounded-lg bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1"
             v-show="isDefaultCover"
         >
             <Heart class="h-[40%] w-[40%] fill-white text-white" />
@@ -38,7 +38,7 @@ const isDefaultCover = computed(() => !props.coverImageSrc);
 
         <img
             alt="Cover Image"
-            class="h-52 w-52 rounded"
+            class="h-52 w-52 rounded-lg"
             :src="coverImageSrc"
             v-show="!isDefaultCover"
         />
