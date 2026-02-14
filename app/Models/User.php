@@ -47,7 +47,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function artist(): HasOne 
+    public function artist(): HasOne
     {
         return $this->hasOne(Artist::class);
     }

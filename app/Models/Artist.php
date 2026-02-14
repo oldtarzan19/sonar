@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Artist extends Model
 {
@@ -15,8 +16,13 @@ class Artist extends Model
         'cover_url'
     ];
 
-    public function user(): BelongsTo 
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function songs(): HasMany
+    {
+        return $this->hasMany(Track::class);
     }
 }
