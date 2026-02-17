@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignIdFor(\App\Models\Artist::class)->constrained()->cascadeOnDelete();
             $table->integer('duration');
+            $table->string('audio_url');
             $table->string('cover_image_url');
             $table->string('video_url')->nullable();
             $table->timestamps();
