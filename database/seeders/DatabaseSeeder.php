@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Artist;
+use App\Models\Track;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Database\Factories\TrackFactory;
@@ -25,5 +26,17 @@ class DatabaseSeeder extends Seeder
                         ->create();
                 }
             });
+        $this->seedTracks();
+    }
+
+
+    protected function seedTracks(): void
+    {
+        $users = User::all();
+        $tracks = Track::all();
+
+        foreach ($users as $user) {
+            $user->favorites()->saveMany($tracks->random(fake()->numberBetween(1, min($tracks->count(), 300))));
+        }
     }
 }
