@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->char('artist_name');
             $table->string('description')->nullable();
             $table->string('logo_url');

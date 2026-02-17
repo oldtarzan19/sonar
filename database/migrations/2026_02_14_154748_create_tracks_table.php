@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tracks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(\App\Models\Artist::class);
+            $table->foreignIdFor(\App\Models\Artist::class)->constrained()->cascadeOnDelete();
             $table->integer('duration');
             $table->string('cover_image_url');
             $table->string('video_url')->nullable();
