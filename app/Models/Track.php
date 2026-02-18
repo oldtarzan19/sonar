@@ -25,7 +25,7 @@ class Track extends Model
 
     public function likedBy(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
     public function playlists(): BelongsToMany

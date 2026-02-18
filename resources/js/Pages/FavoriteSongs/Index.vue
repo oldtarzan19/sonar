@@ -1,5 +1,5 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { useScroll, useElementVisibility, useMounted } from '@vueuse/core';
 import { computed, onMounted } from 'vue';
 import {
@@ -21,6 +21,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/ui/table/index.js';
+
+const page = usePage();
 
 const isPlaying = ref(false);
 const isShuffled = ref(false);
@@ -54,104 +56,18 @@ const unFollowTrack = (trackId) => {
     console.log('This track has been unfollowed: ' + trackId);
 };
 
-const collection = [
-    {
-        id: 1,
-        name: 'Domination',
-        coverImageSrc: 'https://picsum.photos/44/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '2:41',
-    },
-    {
-        id: 2,
-        name: 'Dom',
-        coverImageSrc: 'https://picsum.photos/43/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 10.',
-        length: '2:42',
-    },
-    {
-        id: 3,
-        name: 'ion',
-        coverImageSrc: 'https://picsum.photos/42/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '1:48',
-    },
-    {
-        id: 4,
-        name: 'ASD',
-        coverImageSrc: 'https://picsum.photos/41/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '3:48',
-    },
-    {
-        id: 5,
-        name: 'ASD',
-        coverImageSrc: 'https://picsum.photos/41/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '3:48',
-    },
-    {
-        id: 6,
-        name: 'ASD',
-        coverImageSrc: 'https://picsum.photos/41/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '3:48',
-    },
-    {
-        id: 7,
-        name: 'ASD',
-        coverImageSrc: 'https://picsum.photos/41/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '3:48',
-    },
-    {
-        id: 8,
-        name: 'ASD',
-        coverImageSrc: 'https://picsum.photos/41/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '3:48',
-    },
-    {
-        id: 9,
-        name: 'ASD',
-        coverImageSrc: 'https://picsum.photos/41/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '3:48',
-    },
-    {
-        id: 10,
-        name: 'Domination',
-        coverImageSrc: 'https://picsum.photos/44/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '2:41',
-    },
-    {
-        id: 11,
-        name: 'Domination',
-        coverImageSrc: 'https://picsum.photos/44/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '2:41',
-    },
-    {
-        id: 12,
-        name: 'Domination',
-        coverImageSrc: 'https://picsum.photos/44/46',
-        performer: 'HOLY PRIEST',
-        addDate: '2025.nov. 19.',
-        length: '2:41',
-    },
-];
+const formatDuration = (duration) => {
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration % 60;
+    return `${String(minutes).padStart(2)}:${String(seconds).padStart(2, '0')}`;
+};
+
+const collection = computed(() => {
+    return (page.props.tracks ?? []).map((track) => ({
+        ...track,
+        duration: formatDuration(track.duration),
+    }));
+});
 </script>
 
 <template>
@@ -200,7 +116,7 @@ const collection = [
                 <CollectionHeader
                     user-name="Zsofenszki Kristóf"
                     collection-name="Kedvelt dalok"
-                    number-of-songs="2332"
+                    :number-of-songs="collection.length.toString() ?? '0'"
                 />
             </div>
 
@@ -276,8 +192,8 @@ const collection = [
                                     >
                                         <img
                                             alt="Cover Image"
-                                            :src="track.coverImageSrc"
-                                            class="rounded"
+                                            :src="track.cover_image_url"
+                                            class="h-11 w-11 rounded"
                                         />
                                         <p class="text-lg font-bold">
                                             {{ track.name }}
@@ -286,12 +202,12 @@ const collection = [
                                 </TableCell>
                                 <TableCell>
                                     <p class="font-semibold">
-                                        {{ track.performer }}
+                                        {{ track.artist.artist_name }}
                                     </p>
                                 </TableCell>
                                 <TableCell>
                                     <p class="font-semibold">
-                                        {{ track.addDate }}
+                                        {{ track.liked_date }}
                                     </p>
                                 </TableCell>
                                 <TableCell>
@@ -308,7 +224,7 @@ const collection = [
                                             />
                                         </div>
                                         <p class="font-semibold">
-                                            {{ track.length }}
+                                            {{ track.duration }}
                                         </p>
                                         <div
                                             class="opacity-0 transition-opacity group-hover:opacity-100"
