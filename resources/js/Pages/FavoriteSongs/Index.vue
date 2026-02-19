@@ -1,7 +1,7 @@
 <script setup>
-import { Head, usePage, WhenVisible } from '@inertiajs/vue3';
+import { Head, InfiniteScroll, usePage } from '@inertiajs/vue3';
 import { useScroll, useElementVisibility, useMounted } from '@vueuse/core';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onUpdated } from 'vue';
 import {
     Play,
     Pause,
@@ -15,7 +15,6 @@ import CollectionHeader from '@/Components/CollectionHeader.vue';
 import { ref } from 'vue';
 import {
     Table,
-    TableBody,
     TableCell,
     TableHead,
     TableHeader,
@@ -24,9 +23,11 @@ import {
 import { Skeleton } from '@/Components/ui/skeleton/index.js';
 
 const page = usePage();
+const infiniteScrollEnd = ref(null);
+const getInfiniteScrollEndElement = () => infiniteScrollEnd.value;
 
 const tracksCount = computed(() => {
-    return page.props.tracks_count.toString() ?? '0';
+    return String(page.props.tracks_count ?? 0);
 });
 
 const isPlaying = ref(false);
@@ -35,9 +36,11 @@ const isMounted = useMounted();
 
 // Sticky header refs
 const scrollContainer = ref(null);
-onMounted(() => {
+const syncScrollContainer = () => {
     scrollContainer.value = document.querySelector('main');
-});
+};
+onMounted(syncScrollContainer);
+onUpdated(syncScrollContainer);
 const { y } = useScroll(scrollContainer, { behavior: 'smooth' });
 const stickyHeaderOpacity = computed(() => {
     return Math.min(y.value / 200, 1);
@@ -68,7 +71,7 @@ const formatDuration = (duration) => {
 };
 
 const collection = computed(() => {
-    return (page.props.tracks ?? []).map((track) => ({
+    return (page.props.tracks?.data ?? []).map((track) => ({
         ...track,
         duration: formatDuration(track.duration),
     }));
@@ -78,7 +81,7 @@ const collection = computed(() => {
 <template>
     <Head title="Collection" />
 
-    <AuthenticatedLayout ref="scrollContainer">
+    <AuthenticatedLayout>
         <div class="relative flex min-h-full flex-col">
             <div
                 class="fixed z-10 h-16 w-full pl-4 transition-colors"
@@ -185,60 +188,30 @@ const collection = computed(() => {
                             </TableRow>
                         </TableHeader>
 
-                        <TableBody class="border-b-black">
-                            <WhenVisible data="tracks">
-                                <template #fallback>
-                                    <TableRow v-for="n in 10" :key="n">
-                                        <TableCell>
-                                            <Skeleton
-                                                class="h-4 w-4 bg-white/20"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <div
-                                                class="flex items-center gap-3"
-                                            >
-                                                <Skeleton
-                                                    class="h-11 w-11 rounded bg-white/20"
-                                                />
-                                                <Skeleton
-                                                    class="h-4 w-32 bg-white/20"
-                                                />
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Skeleton
-                                                class="h-4 w-24 bg-white/20"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <Skeleton
-                                                class="h-4 w-20 bg-white/20"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <div
-                                                class="flex items-center justify-center gap-9"
-                                            >
-                                                <Skeleton
-                                                    class="h-4 w-4 rounded-full bg-white/20"
-                                                />
-                                                <Skeleton
-                                                    class="h-4 w-10 bg-white/20"
-                                                />
-                                                <Skeleton
-                                                    class="h-4 w-4 bg-white/20"
-                                                />
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                </template>
-                                <TableRow
-                                    v-for="track in collection"
-                                    :key="track.id"
-                                    class="group hover:bg-white/5"
-                                >
-                                    <TableCell> {{ track.id }}</TableCell>
+                        <InfiniteScroll
+                            data="tracks"
+                            as="tbody"
+                            class="border-b-black [&_tr:last-child]:border-0"
+                            :buffer="600"
+                            :only-next="true"
+                            :end-element="getInfiniteScrollEndElement"
+                            v-slot="{ loadingNext }"
+                            preserve-url
+                        >
+                            <TableRow
+                                v-if="collection.length === 0"
+                                class="hover:bg-transparent"
+                            >
+                                <TableCell colspan="5" class="py-8 text-center">
+                                    Nincs kedvelt dal.
+                                </TableCell>
+                            </TableRow>
+                            <template
+                                v-for="(track, index) in collection"
+                                :key="`track-${track.id}`"
+                            >
+                                <TableRow class="group hover:bg-white/5">
+                                    <TableCell> {{ index + 1 }}</TableCell>
                                     <TableCell>
                                         <div
                                             class="flex flex-row items-center gap-3"
@@ -290,9 +263,56 @@ const collection = computed(() => {
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                            </WhenVisible>
-                        </TableBody>
+                            </template>
+
+                            <template v-if="loadingNext">
+                                <TableRow
+                                    v-for="n in 4"
+                                    :key="`loading-next-${n}`"
+                                >
+                                    <TableCell>
+                                        <Skeleton class="h-4 w-4 bg-white/20" />
+                                    </TableCell>
+                                    <TableCell>
+                                        <div class="flex items-center gap-3">
+                                            <Skeleton
+                                                class="h-11 w-11 rounded bg-white/20"
+                                            />
+                                            <Skeleton
+                                                class="h-4 w-32 bg-white/20"
+                                            />
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Skeleton
+                                            class="h-4 w-24 bg-white/20"
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Skeleton
+                                            class="h-4 w-20 bg-white/20"
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <div
+                                            class="flex items-center justify-center gap-9"
+                                        >
+                                            <Skeleton
+                                                class="h-4 w-4 rounded-full bg-white/20"
+                                            />
+                                            <Skeleton
+                                                class="h-4 w-10 bg-white/20"
+                                            />
+                                            <Skeleton
+                                                class="h-4 w-4 bg-white/20"
+                                            />
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            </template>
+                        </InfiniteScroll>
                     </Table>
+                    <div ref="infiniteScrollEnd" class="h-10 w-full"></div>
                 </div>
             </div>
         </div>
