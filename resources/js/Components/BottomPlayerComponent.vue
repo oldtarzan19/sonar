@@ -11,28 +11,38 @@ import {
     Repeat2,
 } from 'lucide-vue-next';
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui';
-import { computed, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+import { usePlaybackStore } from '@/stores/playbackStore.js';
 
-const isMuted = ref(false);
-const playing = ref(false);
-const isShuffled = ref(false);
-const isRepeated = ref(false);
+const store = usePlaybackStore();
+const { isMuted, isPlaying, isShuffled, isRepeated, volume } =
+    storeToRefs(store);
+
 const progress = ref([0]);
 
-const volumeSliderValue = ref([20]);
+const volumeSliderValue = computed({
+    get: () => [volume.value],
+    set: (newValue) => {
+        store.setVolume(newValue?.[0] ?? 0);
+    },
+});
+
 const startAndStopPlaying = () => {
-    playing.value = !playing.value;
+    store.togglePlayback();
 };
+
 const changeRepeatedStatus = () => {
-    isRepeated.value = !isRepeated.value;
+    store.toggleRepeat();
 };
 
 const changeShuffledStatus = () => {
-    isShuffled.value = !isShuffled.value;
+    store.toggleShuffle();
 };
 
 const nextSong = () => {
     console.log('next song');
+    store.startPlayback();
 };
 
 const prevSong = () => {
@@ -56,14 +66,6 @@ const durationLabel = computed(() => {
 
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 });
-
-watch(volumeSliderValue, (volumeSliderValue) => {
-    isMuted.value = volumeSliderValue[0] === 0;
-});
-
-watch(isMuted, () => {
-    volumeSliderValue.value[0] = 0;
-})
 </script>
 
 <template>
@@ -88,7 +90,7 @@ watch(isMuted, () => {
             <div class="flex h-full flex-col items-center space-y-3">
                 <div class="flex flex-row items-center gap-6">
                     <div
-                        class="relative cursor-pointer transition-transform duration-300 hover:scale-110 "
+                        class="relative cursor-pointer transition-transform duration-300 hover:scale-110"
                         :class="{
                             'text-ui-accent-primary': isShuffled,
                         }"
@@ -110,8 +112,8 @@ watch(isMuted, () => {
                         class="cursor-pointer rounded-full bg-ui-accent-primary p-2 transition-transform duration-300 hover:scale-110"
                         @click="startAndStopPlaying"
                     >
-                        <Play v-show="!playing" class="fill-current" />
-                        <Pause v-show="playing" class="fill-current" />
+                        <Play v-show="!isPlaying" class="fill-current" />
+                        <Pause v-show="isPlaying" class="fill-current" />
                     </div>
                     <div
                         class="cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-ui-muted"
@@ -163,11 +165,7 @@ watch(isMuted, () => {
         <div class="flex flex-row items-center gap-3">
             <div
                 class="cursor-pointer p-1 transition-transform duration-200 hover:scale-110"
-                @click="
-                    () => {
-                        isMuted = !isMuted;
-                    }
-                "
+                @click="store.toggleMuted()"
             >
                 <Headphones v-show="!isMuted" />
                 <HeadphoneOff v-show="isMuted" />

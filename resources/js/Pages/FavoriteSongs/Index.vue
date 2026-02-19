@@ -21,6 +21,8 @@ import {
     TableRow,
 } from '@/Components/ui/table/index.js';
 import { Skeleton } from '@/Components/ui/skeleton/index.js';
+import { usePlaybackStore } from '@/stores/playbackStore.js';
+import { storeToRefs } from 'pinia';
 
 const page = usePage();
 const infiniteScrollEnd = ref(null);
@@ -29,9 +31,9 @@ const getInfiniteScrollEndElement = () => infiniteScrollEnd.value;
 const tracksCount = computed(() => {
     return String(page.props.tracks_count ?? 0);
 });
+const store = usePlaybackStore();
+const { isPlaying, isShuffled } = storeToRefs(store);
 
-const isPlaying = ref(false);
-const isShuffled = ref(false);
 const isMounted = useMounted();
 
 // Sticky header refs
@@ -57,7 +59,7 @@ const changeShuffledStatus = () => {
     isShuffled.value = !isShuffled.value;
 };
 const changePlayStatus = () => {
-    isPlaying.value = !isPlaying.value;
+    store.togglePlayback();
 };
 
 const unFollowTrack = (trackId) => {
