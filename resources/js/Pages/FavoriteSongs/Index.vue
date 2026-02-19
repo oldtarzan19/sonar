@@ -1,5 +1,5 @@
 <script setup>
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage, WhenVisible } from '@inertiajs/vue3';
 import { useScroll, useElementVisibility, useMounted } from '@vueuse/core';
 import { computed, onMounted } from 'vue';
 import {
@@ -21,8 +21,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/ui/table/index.js';
+import { Skeleton } from '@/Components/ui/skeleton/index.js';
 
 const page = usePage();
+
+const tracksCount = computed(() => {
+    return page.props.tracks_count.toString() ?? '0';
+});
 
 const isPlaying = ref(false);
 const isShuffled = ref(false);
@@ -116,7 +121,7 @@ const collection = computed(() => {
                 <CollectionHeader
                     user-name="Zsofenszki Kristóf"
                     collection-name="Kedvelt dalok"
-                    :number-of-songs="collection.length.toString() ?? '0'"
+                    :number-of-songs="tracksCount"
                 />
             </div>
 
@@ -179,64 +184,113 @@ const collection = computed(() => {
                                 </TableHead>
                             </TableRow>
                         </TableHeader>
+
                         <TableBody class="border-b-black">
-                            <TableRow
-                                v-for="track in collection"
-                                :key="track.id"
-                                class="group hover:bg-white/5"
-                            >
-                                <TableCell> {{ track.id }}</TableCell>
-                                <TableCell>
-                                    <div
-                                        class="flex flex-row items-center gap-3"
-                                    >
-                                        <img
-                                            alt="Cover Image"
-                                            :src="track.cover_image_url"
-                                            class="h-11 w-11 rounded"
-                                        />
-                                        <p class="text-lg font-bold">
-                                            {{ track.name }}
-                                        </p>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <p class="font-semibold">
-                                        {{ track.artist.artist_name }}
-                                    </p>
-                                </TableCell>
-                                <TableCell>
-                                    <p class="font-semibold">
-                                        {{ track.liked_date }}
-                                    </p>
-                                </TableCell>
-                                <TableCell>
-                                    <div
-                                        class="flex items-center justify-center gap-9"
-                                    >
-                                        <div
-                                            class="opacity-0 transition-opacity group-hover:opacity-100"
-                                            @click="unFollowTrack(track.id)"
-                                        >
-                                            <Check
-                                                :size="18"
-                                                class="rounded-full bg-ui-accent-primary p-1 text-ui-bg"
+                            <WhenVisible data="tracks">
+                                <template #fallback>
+                                    <TableRow v-for="n in 10" :key="n">
+                                        <TableCell>
+                                            <Skeleton
+                                                class="h-4 w-4 bg-white/20"
                                             />
+                                        </TableCell>
+                                        <TableCell>
+                                            <div
+                                                class="flex items-center gap-3"
+                                            >
+                                                <Skeleton
+                                                    class="h-11 w-11 rounded bg-white/20"
+                                                />
+                                                <Skeleton
+                                                    class="h-4 w-32 bg-white/20"
+                                                />
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Skeleton
+                                                class="h-4 w-24 bg-white/20"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <Skeleton
+                                                class="h-4 w-20 bg-white/20"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <div
+                                                class="flex items-center justify-center gap-9"
+                                            >
+                                                <Skeleton
+                                                    class="h-4 w-4 rounded-full bg-white/20"
+                                                />
+                                                <Skeleton
+                                                    class="h-4 w-10 bg-white/20"
+                                                />
+                                                <Skeleton
+                                                    class="h-4 w-4 bg-white/20"
+                                                />
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                </template>
+                                <TableRow
+                                    v-for="track in collection"
+                                    :key="track.id"
+                                    class="group hover:bg-white/5"
+                                >
+                                    <TableCell> {{ track.id }}</TableCell>
+                                    <TableCell>
+                                        <div
+                                            class="flex flex-row items-center gap-3"
+                                        >
+                                            <img
+                                                alt="Cover Image"
+                                                :src="track.cover_image_url"
+                                                class="h-11 w-11 rounded"
+                                            />
+                                            <p class="text-lg font-bold">
+                                                {{ track.name }}
+                                            </p>
                                         </div>
+                                    </TableCell>
+                                    <TableCell>
                                         <p class="font-semibold">
-                                            {{ track.duration }}
+                                            {{ track.artist.artist_name }}
                                         </p>
+                                    </TableCell>
+                                    <TableCell>
+                                        <p class="font-semibold">
+                                            {{ track.liked_date }}
+                                        </p>
+                                    </TableCell>
+                                    <TableCell>
                                         <div
-                                            class="opacity-0 transition-opacity group-hover:opacity-100"
+                                            class="flex items-center justify-center gap-9"
                                         >
-                                            <EllipsisVertical
-                                                :size="18"
-                                                class="cursor-pointer"
-                                            />
+                                            <div
+                                                class="opacity-0 transition-opacity group-hover:opacity-100"
+                                                @click="unFollowTrack(track.id)"
+                                            >
+                                                <Check
+                                                    :size="18"
+                                                    class="rounded-full bg-ui-accent-primary p-1 text-ui-bg"
+                                                />
+                                            </div>
+                                            <p class="font-semibold">
+                                                {{ track.duration }}
+                                            </p>
+                                            <div
+                                                class="opacity-0 transition-opacity group-hover:opacity-100"
+                                            >
+                                                <EllipsisVertical
+                                                    :size="18"
+                                                    class="cursor-pointer"
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
+                                    </TableCell>
+                                </TableRow>
+                            </WhenVisible>
                         </TableBody>
                     </Table>
                 </div>

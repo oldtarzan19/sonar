@@ -13,7 +13,7 @@ import { Separator } from '@/Components/ui/separator/index.js';
         </Link>
         <Link
             :href="route('collection.index')"
-            class="flex h-[44px] w-[44px] items-center justify-center rounded bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1 shadow-lg transition-transform hover:scale-105 hover:shadow-black duration-200"
+            class="flex h-[44px] w-[44px] items-center justify-center rounded bg-gradient-to-br from-ui-accent-primary via-ui-accent-secondary to-ui-bg p-1 shadow-lg transition-transform duration-200 hover:scale-105 hover:shadow-black"
         >
             <Heart class="fill-white" />
         </Link>
