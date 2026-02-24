@@ -23,7 +23,7 @@ import SideBarComponent from '@/Components/SideBarComponent.vue';
 
                 <!-- MAIN: csak ez görgethető -->
                 <main
-                    class="[&::-webkit-scrollbar-thumb]:rounded mt-1 min-h-0 flex-1 overflow-y-auto [&::-webkit-scrollbar-thumb]:bg-ui-accent-secondary [&::-webkit-scrollbar-track]:bg-ui-bg [&::-webkit-scrollbar]:w-2"
+                    class="mt-1 min-h-0 flex-1 overflow-y-auto [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar-thumb]:bg-ui-accent-secondary [&::-webkit-scrollbar-track]:bg-ui-bg [&::-webkit-scrollbar]:w-2"
                 >
                     <slot />
                 </main>

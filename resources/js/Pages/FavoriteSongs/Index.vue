@@ -78,6 +78,11 @@ const collection = computed(() => {
         duration: formatDuration(track.duration),
     }));
 });
+
+const playTrack = (trackId) => {
+    const track = collection.value.find((track) => track.id === trackId);
+    store.startPlayback(track);
+};
 </script>
 
 <template>
@@ -212,7 +217,10 @@ const collection = computed(() => {
                                 v-for="(track, index) in collection"
                                 :key="`track-${track.id}`"
                             >
-                                <TableRow class="group hover:bg-white/5">
+                                <TableRow
+                                    class="hover:not-focus:bg-indigo-700 group cursor-pointer hover:bg-white/5"
+                                    @click="playTrack(track.id)"
+                                >
                                     <TableCell> {{ index + 1 }}</TableCell>
                                     <TableCell>
                                         <div

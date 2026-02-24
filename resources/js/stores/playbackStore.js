@@ -1,10 +1,23 @@
-import { play, setVolume, stop } from '@/lib/playbackEngine.js';
+import {
+    continuePlaying,
+    pause,
+    play,
+    setVolume,
+} from '@/lib/playbackEngine.js';
 import { defineStore } from 'pinia';
 
 export const usePlaybackStore = defineStore('playback', {
     state: () => ({
         isPlaying: false,
-        currentTrack: null,
+        currentTrack: {
+            id: null,
+            name: 'No tracks',
+            audio_url: null,
+            cover_image_url: null,
+            artist: null,
+            duration: 0,
+            liked_date: null,
+        },
         queue: [],
         isRepeated: false,
         isShuffled: false,
@@ -13,27 +26,24 @@ export const usePlaybackStore = defineStore('playback', {
         lastNonZeroVolume: 50,
     }),
     actions: {
-        stopPlayback() {
-            stop();
-        },
-        startPlayback() {
-            play(
-                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
-                {
-                    volume: this.volume,
-                    onEnd: () => {
-                        console.log('ended');
-                    },
+        startPlayback(track) {
+            this.setCurrentTrack(track);
+            play(track.audio_url, {
+                volume: this.volume,
+                onEnd: () => {
+                    console.log('ended');
                 },
-            );
+            });
+
+            this.isPlaying = true;
         },
         togglePlayback() {
-            if (this.isPlaying) {
-                this.stopPlayback();
-            } else {
-                this.startPlayback();
-            }
             this.isPlaying = !this.isPlaying;
+            if (!this.isPlaying) {
+                pause();
+            } else {
+                continuePlaying();
+            }
         },
         toggleShuffle() {
             this.isShuffled = !this.isShuffled;
@@ -73,6 +83,24 @@ export const usePlaybackStore = defineStore('playback', {
         },
         toggleMuted() {
             this.setMuted(!this.isMuted);
+        },
+        setCurrentTrack(track) {
+            if (track.length === null) {
+                this.currentTrack = {
+                    id: null,
+                    name: 'No tracks',
+                    audio_url: null,
+                    cover_image_url: null,
+                    artist: null,
+                    duration: 0,
+                    liked_date: null,
+                };
+                console.log('No tracks');
+                return;
+            }
+            this.currentTrack = track;
+            console.log('setCurrentTrack track', track);
+            console.log('setCurrentTrack current cratc', this.currentTrack);
         },
     },
 });

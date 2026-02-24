@@ -46,7 +46,9 @@ watch(searchInputFocused, (focused) => {
 </script>
 
 <template>
-    <div class="mt-1 mx-1 rounded bg-ui-surface px-4 text-ui-text sm:px-6 lg:px-4">
+    <div
+        class="mx-1 mt-1 rounded bg-ui-surface px-4 text-ui-text sm:px-6 lg:px-4"
+    >
         <div class="flex h-16 flex-row items-center justify-between">
             <div>
                 <Link :href="route('dashboard')">
@@ -71,7 +73,7 @@ watch(searchInputFocused, (focused) => {
                                 @click="focusOnSearch"
                             />
                             <Input
-                                class="min-w-72 border-none focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                class="min-w-72 border-none placeholder:italic focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                                 ref="searchInput"
                                 placeholder="Mit szeretnél lejátszani?"
                             />

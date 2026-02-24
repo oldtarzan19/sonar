@@ -21,6 +21,8 @@ const { isMuted, isPlaying, isShuffled, isRepeated, volume } =
 
 const progress = ref([0]);
 
+const currentTrack = computed(() => store.currentTrack);
+
 const volumeSliderValue = computed({
     get: () => [volume.value],
     set: (newValue) => {
@@ -79,7 +81,7 @@ const durationLabel = computed(() => {
                 class="h-auto w-[56px] rounded"
             />
             <div class="flex flex-col overflow-hidden">
-                <p class="text-ui-text">Move Your Body</p>
+                <p class="text-ui-text">{{ currentTrack.name }}</p>
                 <p class="text-ui-muted opacity-40">
                     Dimitri Vegas & Like Mike
                 </p>

@@ -4,7 +4,7 @@ let currentHowl = null;
 let preloadedHowl = null;
 let preloadedSrc = null;
 
-export function play(src, { volume = 1, onEnd } = {}) {
+export function play(src, { volume, onEnd } = {}) {
     let volume01 = volume / 100;
 
     if (preloadedHowl && preloadedSrc === src) {
@@ -16,20 +16,23 @@ export function play(src, { volume = 1, onEnd } = {}) {
         if (currentHowl) currentHowl.unload();
         currentHowl = new Howl({
             src: [src],
-            html5: true, // CORS-os teszthez gyakran kell
-            volume01,
+            html5: true,
+            volume: volume01,
             onend: onEnd,
         });
     }
 
     currentHowl.play();
 }
-
-export function stop() {
+export function pause() {
     if (!currentHowl) return;
-    currentHowl.stop();
+    currentHowl.pause();
 }
 
+export function continuePlaying() {
+    if (!currentHowl) return;
+    currentHowl.play();
+}
 export function setVolume(volume01) {
     if (!currentHowl) return;
     currentHowl.volume(Math.max(0, Math.min(1, volume01 / 100)));
